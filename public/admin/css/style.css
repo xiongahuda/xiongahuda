@@ -184,21 +184,21 @@ position:absolute; top:0px; left:0px; z-index:44;
 	height: 30px;
 	cursor:pointer;
 }
-.bill-body{
+.allbody{
 /*	background-color: red;*/
 	width: 500px;
 	height: 360px;
 	margin-top: 50px;
 }
 
-.bill-tail{
+.alltail{
 	margin-top: 50px;
 	width: 500px;
 	height:30px;
 	/*background-color: yellow;*/
 }
 
-.bill-tail-left{
+.alltailleft{
 	float: left;
 }
 

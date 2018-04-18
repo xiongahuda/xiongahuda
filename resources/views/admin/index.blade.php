@@ -81,11 +81,9 @@ Cufon.replace('H3', { fontFamily: 'Candy Script' });
                 <div class="inner_copyright">Collect from <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a></div>
                 <div class="tabs-container">
     				
-
 					 <div style="display: block;" class="tab" id="tab1">
                          <h2>Home page</h2><br><br><br><br><br>
-
-            <div class="home-page">
+            <div class="home-page" style="display: none;" >
             <div class="uldiv" >
             	<ul>
                          		<li>唯</li>
@@ -255,12 +253,8 @@ Cufon.replace('H3', { fontFamily: 'Candy Script' });
                          		<li>问</li>
                          		<li>月</li>
                          	</ul>
-			</div>
-                         	
-                         	
-                         	
-                         	
-                         </div>       
+			</div> 	
+                      </div>       
                      </div>  
 
                     <div style="display: none;" class="tab" id="tab2">
@@ -276,13 +270,13 @@ Cufon.replace('H3', { fontFamily: 'Candy Script' });
                     	</div>
                     	<div class="divadd billadd" style="text-align:center;">添加账单</div>
                     </div>
-                    <div class="bill-body">
+                    <div class="bill-body allbody">
                     	
                     </div>
-                    <div class="bill-tail">
+                    <div class="bill-tail alltail">
                     <input type="hidden" id="page" value="1">
-                    	<div class="bill-tail-left"></div>
-                    	<div class="bill-tail-right"></div>
+                    	<div class="bill-tail-left alltailleft"></div>
+                    	<div class="bill-tail-right alltailright"></div>
                     </div>
                     <!-- <p>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
@@ -305,9 +299,28 @@ Cufon.replace('H3', { fontFamily: 'Candy Script' });
 
 
                      <div style="display: none;" class="tab" id="tab3">
-                            <h2>Education</h2><br><br><br>
-                            老臣还未开发
+                            <h2>Notes</h2><br><br><br>
+                             <div class="bill-top">
+		                    	<div class="inputadd">
+		                    	<input type="text" name="" id="billtimesearch" placeholder="标题">
+		                    	<input type="hidden" value="no" id="hiddenSearchVal">
+		                    	<input type="button" name="" id="searchbill" value="搜索" class="getnotes" searchrange="some">
+
+		                    	<input type="button" name="" id="allbill" value="全部笔记" class="getbillnotes" searchrange="all">
+		                    	</div>
+		                    	<div class="divadd notesadd" style="text-align:center;">记记笔记</div>
+                    		</div>
+                    <div class="notes-body allbody">
+                    	
+                    </div>
+
+                    <div class="notes-tail alltail">
+                    <input type="hidden" id="page" value="1">
+                    	<div class="notes-tail-left alltailleft"></div>
+                    	<div class="notes-tail-right alltailright"></div>
+                    </div>
                      </div>
+
                      <div style="display: none;" class="tab" id="tab4">
                             <h2>Education</h2><br><br><br>
                             老臣还未开发
@@ -344,12 +357,20 @@ id: 'demo'
 <script type="text/javascript">
 $(function(){
 	getsession();
-
-	// $('.ok').hover(function(){
-	// 	$(this).addClass('hover');
-	// },function(){
-	// 	$(this).removeClass('hover');
-	// })
+	$('.notesadd').click(function(){//显示笔记添加页面
+		showDiv();
+		$('#popDiv').css('height','300px');
+		var html = '<center>';
+		html+='<div class="admininput"><input type="text" name="admin" id="admin" placeholder="标题"></div>';
+		html+='<div class="admininput"><textarea id="notesVal" style="width:240px;height:80px;margin-top:20px;" placeholder="笔记内容"></textarea></div>';
+		html+='<div class="adminbutton"><input type="button" id="okadmin" class="oknotes" value="记下">&nbsp;&nbsp;<input type="button" id="okadmin" class="ok cancel" value="取消"></div></center>';
+	$('#popDiv').html(html);
+	})
+	$('.oknotes').live('click',function(){//执行笔记添加
+		var notesVal = $('#notesVal').val();
+		var title = $('#admin').val();
+		
+	})
 
 	$('.divadd').hover(function(){
 		$(this).addClass('hover');
@@ -422,7 +443,9 @@ function getsession(){  //自动检测session  是否确认账号
 		data:{'aaa':'123'},
 		success:function(r){
 			if(r==1){
-				$('.home-page').show();
+				$(".home-page").animate({
+					   opacity: 'show'
+					 }, 5000);
 				return true;
 			}
 			showDiv();
@@ -445,7 +468,7 @@ $('.billadd').click(function(){ //显示账单添加页面
 })
 
 $('.cancel').live('click',function(){  //取消账单添加页面
-	closeDiv();
+		closeDiv();
 })
 
 $('.okbill').live('click',function(){  //添加账单数据
@@ -608,17 +631,16 @@ function getbilltable(object){
 	// 	if(confirm('确定要退出吗？')){
 	// 		window.close();
 	// 	}
-	// })
-	// 
+	// }) 
 	$(".autoplay").click(function() {
-    var music = document.getElementById("music");
-    if (music.paused) {
-        music.play();
-        $(".autoplay").html("点击关闭音乐");
-    } else {
-        music.pause();
-        $(".autoplay").html("点击播放音乐");
-    }
+	    var music = document.getElementById("music");
+	    if (music.paused) {
+	        music.play();
+	        $(".autoplay").html("点击关闭音乐");
+	    } else {
+	        music.pause();
+	        $(".autoplay").html("点击播放音乐");
+	    }
 });
 })
 

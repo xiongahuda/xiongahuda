@@ -46,7 +46,7 @@
 // Route::group(['prefix'=>'reception','namespace'=>'Reception'],function(){
 
 // });
-
+Route::any('/admin/','IndexController@index');//设置默认访问控制器方法名
 Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
 
 	Route::get('index',"IndexController@index");

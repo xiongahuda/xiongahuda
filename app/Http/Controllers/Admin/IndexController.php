@@ -12,6 +12,12 @@ class IndexController extends CommonController
 {
     public function index(){
     	return view('admin.index');
+    	 //  location ~ [^/]\.php(/|$) {
+      // #fastcgi_pass remote_php_ip:9000;
+      // fastcgi_pass unix:/dev/shm/php-cgi.sock;
+      // fastcgi_index index.php;
+      // include fastcgi.conf;
+    //}
     }
 
     /**
