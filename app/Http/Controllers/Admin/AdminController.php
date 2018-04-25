@@ -22,7 +22,7 @@ class AdminController extends CommonController
 
     }
 
-        public function verification(Request $request){
+    public function verification(Request $request){
         $input = $request->input();
         $admin_name = $input['admin_name'];
         $result = DB::table('admin')->where('admin_name',$admin_name)->select('admin_name','id')->first();

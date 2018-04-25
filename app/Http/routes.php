@@ -46,7 +46,7 @@
 // Route::group(['prefix'=>'reception','namespace'=>'Reception'],function(){
 
 // });
-Route::any('/admin/','IndexController@index');//设置默认访问控制器方法名
+
 Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
 
 	Route::get('index',"IndexController@index");
@@ -56,5 +56,8 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
 	Route::any('getbill',"IndexController@getbill");
 	Route::any('delbill',"IndexController@delbill");
 	Route::get('loginout',"AdminController@loginout");
+	Route::any('notesadd',"IndexController@notesadd");
+	Route::any('getnotes',"IndexController@getnotes");
+	Route::any('blogadd',"IndexController@blogadd");
 
 });

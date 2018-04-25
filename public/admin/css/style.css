@@ -232,3 +232,24 @@ position:absolute; top:0px; left:0px; z-index:44;
 	cursor:pointer;
 	border-radius: 15px;
 }
+.notesdiv{
+	width:480px;
+	height:36px;
+	border-radius: 10px;
+	border: 1px solid black;
+	font-size: 14px;
+}
+.notesdiv-left{
+	float: left;
+	width:180px;
+	line-height: 36px;
+	text-align:center;
+	
+}
+.notesdiv-right{
+	float: right;
+	width:300px;
+	line-height: 36px;
+	text-align:center;
+	
+}

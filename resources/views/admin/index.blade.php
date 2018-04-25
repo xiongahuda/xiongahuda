@@ -23,7 +23,7 @@ Cufon.replace('H3', { fontFamily: 'Candy Script' });
 <div id="popDiv" style="z-index:66;display:none;position:absolute;margin-top: 15%;margin-left: 35%;">
 <center>
 <div class="admininput"><input type="text" name="admin" id="admin" placeholder="请输入用户名"></div>
-<div class="adminbutton"><input type="button" name="" id="okadmin" value="确认" class="ok"></div>
+<div class="adminbutton"><input type="button" name="" id="okadmin" value="确认" class="ok okadmin"></div>
 <div class="prompt"></div>
  
 
@@ -302,11 +302,11 @@ Cufon.replace('H3', { fontFamily: 'Candy Script' });
                             <h2>Notes</h2><br><br><br>
                              <div class="bill-top">
 		                    	<div class="inputadd">
-		                    	<input type="text" name="" id="billtimesearch" placeholder="标题">
+		                    	<input type="text" name="" id="billtimesearch" placeholder="关键字" class="searchNotes">
 		                    	<input type="hidden" value="no" id="hiddenSearchVal">
 		                    	<input type="button" name="" id="searchbill" value="搜索" class="getnotes" searchrange="some">
 
-		                    	<input type="button" name="" id="allbill" value="全部笔记" class="getbillnotes" searchrange="all">
+		                    	<!-- <input type="button" name="" id="allbill" value="全部笔记" class="getbillnotes" searchrange="all"> -->
 		                    	</div>
 		                    	<div class="divadd notesadd" style="text-align:center;">记记笔记</div>
                     		</div>
@@ -315,15 +315,32 @@ Cufon.replace('H3', { fontFamily: 'Candy Script' });
                     </div>
 
                     <div class="notes-tail alltail">
-                    <input type="hidden" id="page" value="1">
+                    <input type="hidden" id="notestotal" value="">
                     	<div class="notes-tail-left alltailleft"></div>
                     	<div class="notes-tail-right alltailright"></div>
                     </div>
                      </div>
 
                      <div style="display: none;" class="tab" id="tab4">
-                            <h2>Education</h2><br><br><br>
-                            老臣还未开发
+                            <h2>Blog</h2><br><br><br>
+                            <div class="bill-top">
+		                    	<div class="inputadd">
+		                    	<input type="text" name="" id="billtimesearch" placeholder="标题关键字" class="searchBlog">
+		                    	<input type="button" name="" id="searchbill" value="搜索" class="getBlog" searchrange="some">
+
+		                    	<!-- <input type="button" name="" id="allbill" value="全部笔记" class="getbillnotes" searchrange="all"> -->
+		                    	</div>
+		                    	<div class="divadd blogadd" style="text-align:center;">发表博文</div>
+                    		</div>
+                    <div class="blog-body allbody">
+                    	
+                    </div>
+
+                    <div class="bolg-tail alltail">
+                    	<div class="blog-tail-left alltailleft"></div>
+                    	<div class="blog-tail-right alltailright"></div>
+                    </div>
+
                      </div>
                      <div style="display: none;" class="tab" id="tab5">
                             <h2>Education</h2><br><br><br>
@@ -353,78 +370,165 @@ id: 'demo'
 </script>
 </body>
 </html>
-<script type="text/javascript" src="{{asset('admin/js/hu.js')}}"></script>
+<script type="text/javascript" src="{{asset('admin/js/jQuery.js')}}"></script>
 <script type="text/javascript">
 $(function(){
 	getsession();
+    backVal={};
+	//博文添加页面
+$('.blogadd').click(function(){
+	showDiv();
+	$('#popDiv').css('height','450px').css('width','500px');
+	var html = '<center>';
+	html+='<div class="admininput"><input type="text" name="admin" id="admin" placeholder="标题"></div>';
+	html+='<div class="admininput"><textarea id="blogVal" style="width:240px;height:200px;margin-top:20px;" placeholder="博文内容"></textarea></div>';
+	html+='<br><div class="admininput"><input type="radio" name="pay" id="pay" checked value="1"><span style="color:#7CFC00;">所有人可见</span><input type="radio" name="pay" id="pay" value="2"><span style="color:#7CFC00;">仅自己可见</span></div>';
+	html+='<div class="adminbutton"><input type="button" id="okadmin" class="okblog" value="发表">&nbsp;&nbsp;<input type="button" id="okadmin" class="ok cancel" value="取消"></div></center>';
+	$('#popDiv').html(html);
+})
+//博文添加
+$('.okblog').live('click',function(){
+
+	var blog_title = $('#admin').val();
+    var blog_text = $('#blogVal').val();//面向对象  设计模式  算法 微信  微信小程序  数据库优化 laravel框架 redis  laravel框架跟新时间  多条件查询
+    var blog_per = $('#pay:checked').val();
+    var r = ajaxPost('{{url("admin/blogadd")}}',{'blog_title':blog_title,'blog_text':blog_text,'blog_per':blog_per});
+})
+
+
+//ajax post请求
+function ajaxPost(url,object){
+    $.post(url,object,
+        function(data){
+            alert(data)
+   });
+}
+
 	$('.notesadd').click(function(){//显示笔记添加页面
 		showDiv();
-		$('#popDiv').css('height','300px');
+		$('#popDiv').css('height','300px').css('width','350px');
 		var html = '<center>';
 		html+='<div class="admininput"><input type="text" name="admin" id="admin" placeholder="标题"></div>';
 		html+='<div class="admininput"><textarea id="notesVal" style="width:240px;height:80px;margin-top:20px;" placeholder="笔记内容"></textarea></div>';
 		html+='<div class="adminbutton"><input type="button" id="okadmin" class="oknotes" value="记下">&nbsp;&nbsp;<input type="button" id="okadmin" class="ok cancel" value="取消"></div></center>';
 	$('#popDiv').html(html);
 	})
-	$('.oknotes').live('click',function(){//执行笔记添加
-		var notesVal = $('#notesVal').val();
-		var title = $('#admin').val();
-		
-	})
 
-	$('.divadd').hover(function(){
-		$(this).addClass('hover');
-	},function(){
-		$(this).removeClass('hover');
-	})
+//执行笔记添加
+$('.oknotes').live('click',function(){var notesVal = $('#notesVal').val();var title = $('#admin').val();if(title!='' && notesVal!=''){$.ajax({type:"post",url:"{{url('admin/notesadd')}}",data:{"notesVal":notesVal,"title":title},dataType:"json",success:function(r){if(r.err){closeDiv();}else{alert(r.mes)}}})}})
 
-	$('#okadmin').click(function(){   //账号确认按钮
-		var val = $('#admin').val();
-		if(val==''){
-			alert('不能为空');
-			return false;
-		}
-		$.ajax({
-			type:"post",
-			url:"{{url('admin/verification')}}",
-			data:{'admin_name':val},
-			dataType:"json",
-			success:function(r){
-				if(r.err){
-					closeDiv();
-					$(".home-page").animate({
-					   opacity: 'show'
-					 }, 5000);
-				}else{
-
-					$('.prompt').show();
-					$('.prompt').html(r.mes);
-					sixtenFun();
-				}
+//搜索笔记
+$('.getnotes').click(function(){
+	var title = $('.searchNotes').val();
+	if(title==''){
+		alert('请输入标题');
+		return false;
+	}
+	$.ajax({
+		type:"post",
+		url:"{{url('admin/getnotes')}}",
+		data:{'title':title},
+		dataType:"json",
+		success:function(r){
+			if(r.err){
+				var table = getnoteshtml(r.data);
+				$('.notes-body').html(table);
+				$('.notes-tail-left').html('当前第 '+r.page+' 页 共有 '+r.total+' 页 共检索出 '+r.count+' 条数据');
+				$('.notes-tail-right').html('<input type="button" id="allbill" class="notespage" value="下一页" p="'+(parseInt(r.page)+1)+'"/>');
+				$('#notestotal').val(r.total);
+			}else{
+				$('.notes-body').html(r.mes);
 			}
-		})
+		}
 	})
+});
+
+//笔记分页
+$('.notespage').live('click',function(){
+	var total = $('#notestotal').val();
+
+	var obj = $(this);
+	var p = obj.attr('p');
+	var search = $('.billtimesearch').val();
+	if(total<=p){
+		return false;
+	} 
+	$.ajax({
+		type:"post",
+		url:"{{url('admin/getnotes')}}",
+		data:{'title':search,'page':p},
+		dataType:"json",
+		success:function(r){
+			if(r.err){
+				var table = getnoteshtml(r.data);
+				$('.notes-tail-left').html('当前第 '+r.page+' 页 共有 '+r.total+' 页 共检索出 '+r.count+' 条数据');
+				var p = parseInt(r.page)+1;
+				$('.notespage').attr('p',p);
+				$('#notestotal').val(r.total);
+			}else{
+				$('.notes-body').html(r.mes);
+			}
+		}
+	});
+});
+//拼接笔记字符串
+function getnoteshtml(data){
+	var str = '';
+	$.each(data,function(k,v){
+		str+='<div class="notesdiv"><div class="notesdiv-left">'+v.notes_title+'</div><div class="notesdiv-right">'+v.notes_text+'</div></div>';
+	})
+	return str;
+}
+
+
+//鼠标滑过
+$('.divadd').hover(function(){$(this).addClass('hover');},function(){$(this).removeClass('hover');})
+
+//账号确认按钮
+$('.okadmin').click(function(){
+	var val = $('#admin').val();
+    if(val=='')
+	{
+		alert('不能为空');
+		return false;
+	}
+	$.ajax({
+		type:"post",
+		url:"{{url('admin/verification')}}",
+		data:{'admin_name':val},
+		dataType:"json",
+		success:function(r)
+		{
+			if(r.err)
+			{
+				closeDiv();
+				$(".home-page").animate({opacity: 'show'}, 5000);
+			}else
+			{
+				$('.prompt').show();$('.prompt').html(r.mes);sixtenFun();
+			}
+		}
+	})
+})
 
 		sixten = 5;
         setIntervalOne = '';
-		//倒计时
-		function sixtenFun(){  //倒计时
+//倒计时
+function sixtenFun(){ 
+	setIntervalOne = setInterval(function(){
+		sixten -= 1;
+		if(sixten == 0)
+		{
+			$('.prompt').hide('slow');stoptime();}
+		}, 1000);
+}
 
-                setIntervalOne = setInterval(function(){
-                    sixten -= 1;
-                    if(sixten == 0){
-                        $('.prompt').hide('slow');
-                         stoptime();
-                    }
-                }, 1000);
-                   
-            }
-
-     function stoptime(){  //停止倒计时
-     	  clearInterval(setIntervalOne);
-          setIntervalOne = '';
-          sixten = 5;
-     }
+//停止倒计时
+function stoptime(){  
+	clearInterval(setIntervalOne);
+	setIntervalOne = '';
+	sixten = 5;
+}
 
 function showDiv(){  //弹出弹框
 	$('#popDiv').show();
@@ -457,7 +561,7 @@ function getsession(){  //自动检测session  是否确认账号
 
 $('.billadd').click(function(){ //显示账单添加页面
 	showDiv();
-	$('#popDiv').css('height','300px');
+	$('#popDiv').css('height','300px').css('width','350px');
 	var html = '<center>';
 	html+='<div class="admininput"><input type="text" name="admin" id="admin" placeholder="账单注释"></div>';
 	html+='<div class="admininput"><input type="text" name="money" id="admin" placeholder="金额"></div>';
@@ -484,7 +588,7 @@ $('.okbill').live('click',function(){  //添加账单数据
 		success:function(r){
 			if(r.err){
 				closeDiv();
-				alert(r.mes);
+				//alert(r.mes);
 			}else{
 				alert(r.mes);
 			}
@@ -625,13 +729,6 @@ function getbilltable(object){
 		})
 
 	})
-
-
-	// $('.closeWindows').click(function(){  //关闭当前窗口
-	// 	if(confirm('确定要退出吗？')){
-	// 		window.close();
-	// 	}
-	// }) 
 	$(".autoplay").click(function() {
 	    var music = document.getElementById("music");
 	    if (music.paused) {

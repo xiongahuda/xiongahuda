@@ -12,12 +12,7 @@ class IndexController extends CommonController
 {
     public function index(){
     	return view('admin.index');
-    	 //  location ~ [^/]\.php(/|$) {
-      // #fastcgi_pass remote_php_ip:9000;
-      // fastcgi_pass unix:/dev/shm/php-cgi.sock;
-      // fastcgi_index index.php;
-      // include fastcgi.conf;
-    //}
+
     }
 
     /**
@@ -34,7 +29,7 @@ class IndexController extends CommonController
     	if(!$true){
     		echo json_encode(['err'=>0,'mes'=>'请认真填写']);die;
     	}
-    	$input['time'] = date("Y-m-d H:i:s",time());
+    	$input['time'] = date("Y-m-d");
     	$input['admin_id'] = $this->session->get('admin');
     	if(DB::table('bill')->insert($input)){
     		$arr = ['err'=>1,'mes'=>'数据录入'];
@@ -156,4 +151,54 @@ class IndexController extends CommonController
     /**
      * bill module End;
      */
+    
+    /**
+     * notes module
+     */
+    public function notesadd(Request $request){//添加笔记
+    	$input = $request->input();
+    	if(DB::table('notes')->insert(['notes_title'=>$input['title'],'notes_text'=>$input['notesVal'],'admin_id'=>$this->session->get('admin')])){
+    		$arr = ['err'=>1,'mes'=>'记下了'];
+    	}else{
+    		$arr = ['err'=>0,'mes'=>'操作异常'];
+    	}
+    	echo json_encode($arr);
+    }
+
+    public function getnotes(Request $request){   	//搜索查询笔记
+    	$title = $request->input('title');
+    	$page = 1;
+    	if($request->input('page')){
+    		$page =$request->input('page');
+    	}
+    	$limit = ($page-1)*10;
+    	$admin_id = $this->session->get('admin');
+    	$notes = DB::select("select id,notes_title,notes_text from notes where admin_id='$admin_id' and notes_title like '%$title%' limit $limit,10");
+    	$count = DB::select("select count(id) as count from notes where admin_id='$admin_id' and notes_title like '%$title%'");
+    	foreach($notes as $k=>$v){
+    		
+    		$notes[$k]->notes_title = str_replace($title,'<font color="red">'.$title.'</font>',$v->notes_title);
+    	}
+    	if($notes){
+    		$arr = ['err'=>1,'mes'=>'梅茂坦','data'=>$notes,'page'=>$page,'count'=>$count[0]->count,'total'=>ceil($count[0]->count/10)];
+    	}else{
+    		$arr = ['err'=>0,'mes'=>'未检测到数据'];
+    	}
+    	echo json_encode($arr);
+    }
+    /**
+     * notes module End;
+     */
+    
+    /**
+     * blog module
+     */
+    public function blogadd(Request $request){
+    	$input = $request->input();
+    	$this->p($input);
+    	if(!$this->VerificationFalse($input)){
+    		echo json_encode(['err'=>0,'mes'=>'不能为空']);
+    	}
+    	$this->p($input);
+    }
 }

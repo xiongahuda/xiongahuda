@@ -29,4 +29,14 @@ class CommonController extends Controller
 	public function getArray($val){  //获取数组
 		return json_decode(json_encode($val), true);
 	}
+
+	public function VerificationFalse($data){
+		$r =true;
+		foreach($data as $val){
+			if($val==''){
+				$r=false;
+			}
+		}
+		return $r;
+	}
 }
